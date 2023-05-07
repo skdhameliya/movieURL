@@ -22,7 +22,8 @@ const SearchMovie = () => {
 
         axios.request(config)
         .then((response) => {
-           
+        //    console.log(response.data.length)
+        //    console.log(response.data)
             /*
 
             let random = Math.floor(Math.random() * 5);
@@ -36,7 +37,9 @@ const SearchMovie = () => {
             setMovie(movies[random])
             
             */
-            setMovie(response.data[0])
+            if(response.data.length != 0){
+                setMovie(response.data[0])
+            }
         })
         .catch((error) => {
             console.log(error);
@@ -44,23 +47,35 @@ const SearchMovie = () => {
 
     }, []);
 
-  return (
-    <>
-        {
-            movie.length !== 0 && <div className="container mt-5">
-                {/* <h1 className='mt-5 text-center'>Yo Movies</h1> */}
-                <div className="row justify-content-md-center text-center mt-5">
-                    <div className="col-1"></div>
-                    <div className="col-10">
-                        <h1>{movie.title}</h1>
-                        <iframe src={`${movie.download_link}`} width="100%" height="400vh" allow="autoplay" allowFullScreen></iframe>
+    if(movie?.length !== 0){
+
+        return (
+            <>
+                {
+                    <div className="container mt-5">
+                        <div className="row justify-content-md-center text-center">
+                            <div className="col-1"></div>
+                            <div className="col-10">
+                                <h1>{movie?.title}</h1>
+                                <iframe className='mt-5' src={`${movie?.download_link}`} width="100%" height="400vh" allow="autoplay" allowFullScreen></iframe>
+                            </div>
+                            <div className="col-1"></div>
+                        </div>
                     </div>
-                    <div className="col-1"></div>
-                </div>
-            </div>
-        }
-    </>
-  )
+                }
+            </>
+          )
+
+    }
+    else{
+        return (
+            <>
+                <h1 className='text-center mt-5 mb-5'>Loading</h1>
+            </>
+        )
+    }
+
+  
 }
 
 export default SearchMovie
